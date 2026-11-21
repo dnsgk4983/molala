@@ -1,16 +1,22 @@
-# React + Vite
+# Molala
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+모바일 웹 기반 메신저형 비주얼 노벨 프로젝트입니다.
 
-Currently, two official plugins are available:
+## 로컬 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm ci
+npm run dev
+```
 
-## React Compiler
+## GitHub Pages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`main` 브랜치에 푸시하면 `.github/workflows/deploy.yml`에서 Vite 빌드 후 `dist`를 배포합니다.
 
-## Expanding the ESLint configuration
+GitHub 저장소의 **Settings → Pages → Source**를 **GitHub Actions**로 설정하세요.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+배포 주소: https://dnsgk4983.github.io/molala/
+
+`vite.config.js`의 `base: '/molala/'` 설정을 유지해야 합니다.
+
+이전 버전에서 사용하던 `morara_*` localStorage 키는 기존 저장 기록 복구를 위해서만 코드에 남겨두었습니다.
