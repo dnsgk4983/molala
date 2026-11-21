@@ -5,7 +5,9 @@ import TitlePage from './pages/TitlePage.jsx';
 import ProloguePage from './pages/ProloguePage.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import EndingPage from './pages/EndingPage.jsx';
+import BeachScenePage from './pages/BeachScenePage.jsx';
 import CookiePage from './pages/CookiePage.jsx';
+import GalleryPage from './pages/GalleryPage.jsx';
 import { load_game, delete_save } from './utils/save_game.js';
 import StartSettings from './components/StartSettings.jsx';
 import { load_preferences, save_preferences } from './utils/preferences.js';
@@ -15,8 +17,10 @@ const PAGE = {
     TITLE: 'title',
     PROLOGUE: 'prologue',
     CHAT: 'chat',
+    BEACH: 'beach',
     ENDING: 'ending',
-    COOKIE: 'cookie'
+    COOKIE: 'cookie',
+    GALLERY: 'gallery'
 };
 
 function get_initial_page() {
@@ -73,6 +77,11 @@ function App() {
             return;
         }
 
+        if (game_data?.beach_started === true) {
+            set_current_page(PAGE.BEACH);
+            return;
+        }
+
         const has_progress = (
             Number(game_data?.day) > 1 ||
             Number(game_data?.step) > 0 ||
@@ -102,6 +111,10 @@ function App() {
 
     const handle_enter_ending = () => {
         set_settings_open(false);
+        set_current_page(PAGE.BEACH);
+    };
+
+    const handle_beach_complete = () => {
         set_current_page(PAGE.ENDING);
     };
 
@@ -132,12 +145,13 @@ function App() {
                             on_continue={continue_game}
                             has_save={has_save}
                             on_settings={() => set_settings_open(true)}
+                            on_gallery={() => set_current_page(PAGE.GALLERY)}
                         />
                         {show_new_confirm && (
                             <div className="start_settings" role="presentation">
                                 <div className="start_settings__panel" role="dialog" aria-modal="true" aria-labelledby="new_game_title">
                                     <h2 id="new_game_title">새로 시작할까요?</h2>
-                                    <p>기존 진행 기록이 삭제되고 처음부터 시작해요. 게임 설정은 유지됩니다.</p>
+                                    <p>기존 진행 기록이 삭제되고 처음부터 시작해요.<br />게임 설정은 유지됩니다.</p>
                                     <div className="start_settings__actions">
                                         <button className="start_settings__confirm" type="button" onClick={start_new_game}>새로 시작하기</button>
                                         <button className="start_settings__back" type="button" onClick={() => set_show_new_confirm(false)}>취소</button>
@@ -182,12 +196,24 @@ function App() {
                     </>
                 );
 
+            case PAGE.BEACH:
+                return (
+                    <BeachScenePage
+                        on_complete={handle_beach_complete}
+                        on_return_title={handle_return_title}
+                    />
+                );
+
             case PAGE.ENDING:
                 return (
                     <EndingPage
                         on_restart={handle_ending_complete}
+                        on_return_title={handle_return_title}
                     />
                 );
+
+            case PAGE.GALLERY:
+                return <GalleryPage on_back={handle_return_title} />;
 
             case PAGE.COOKIE:
                 return (

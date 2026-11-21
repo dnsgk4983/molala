@@ -1,0 +1,74 @@
+@use '../abstracts/mixins' as *;
+
+.cookie_story {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #30223b;
+
+    &__background {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__shade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(32, 18, 38, 0.28), rgba(32, 18, 38, 0.75));
+    }
+
+    &__card {
+        position: absolute;
+        @include vw(right, 30px);
+        @include vw(bottom, 85px);
+        @include vw(left, 30px);
+        @include vw(padding, 35px);
+        @include vw(border-radius, 24px);
+        background: rgba(255, 248, 252, 0.96);
+        color: #613c54;
+        text-align: center;
+        animation: cookie_story_appear 500ms ease-out both;
+
+        h1 {
+            @include vw(font-size, 35px);
+            @include vw(margin-top, 16px);
+            @include vw(margin-bottom, 20px);
+            word-break: keep-all;
+        }
+
+        p {
+            @include vw(font-size, 23px);
+            line-height: 1.6;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        button {
+            width: 100%;
+            @include vw(min-height, 72px);
+            @include vw(margin-top, 24px);
+            @include vw(border-radius, 16px);
+            border: 0;
+            background: #ae5b8b;
+            color: #ffffff;
+            font-weight: 800;
+            @include vw(font-size, 23px);
+            cursor: pointer;
+        }
+    }
+
+    &__count {
+        color: #a05a83;
+        font-weight: 800;
+        @include vw(font-size, 18px);
+    }
+}
+
+@keyframes cookie_story_appear {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}

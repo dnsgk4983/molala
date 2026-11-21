@@ -4,41 +4,6 @@ export const story_data = {
     1: [
         {
             "type": "message",
-            "sender": "system",
-            "text": "해변에서 주운 휴대폰 · 메모장 발견"
-        },
-        {
-            "type": "message",
-            "sender": "narration",
-            "text": "(분실물인데 화면이 켜져 있다. 메모장 제목이… '코랄기사단장의 의무'?)"
-        },
-        {
-            "type": "message",
-            "sender": "system",
-            "text": "기사단장의 의무 · 제1조 공주님의 연락에 성실하고 정성껏 답변할 것"
-        },
-        {
-            "type": "message",
-            "sender": "system",
-            "text": "제2조 공주님의 말씀을 경청하고 그 뜻을 헤아릴 것"
-        },
-        {
-            "type": "message",
-            "sender": "system",
-            "text": "제3조 공주님의 귀여움을 발견하더라도 지나치게 놀리지 말 것"
-        },
-        {
-            "type": "message",
-            "sender": "system",
-            "text": "제4조 공주님께서 곤경에 처하셨을 때 가장 먼저 달려올 것"
-        },
-        {
-            "type": "message",
-            "sender": "system",
-            "text": "제5조 공주님과 함께한 모든 순간을 소중히 간직할 것"
-        },
-        {
-            "type": "message",
             "sender": "molala",
             "text": "단자아아앙!!"
         },
@@ -785,47 +750,17 @@ export const story_data = {
         {
             "type": "message",
             "sender": "molala",
-            "text": "방송하다 보면 정말 많은 사람을 만나잖아."
+            "text": "아 맞다, 녹음할 때 갈매기 소리가 들어가서 세 번이나 다시 불렀어ㅋㅋ"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "매일 함께 웃던 시간이 나중에는 추억이 되기도 하고."
+            "text": "그 부분 찾아내면 진짜 대단한 거다?"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "옛날 채팅 보면 내가 했던 말도, 코랄단이 했던 장난도 생각나ㅋㅋ"
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "그래서 그런 순간들을 오래 기억하고 싶어."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "그렇다고 새로운 날이 기대되지 않는 건 아니야."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "너랑 이렇게 새로운 이야기를 하고 있는 것처럼ㅎㅎ"
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "…아 뭐야ㅋㅋㅋ 또 갑자기 진지해졌네."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "아무튼! 오늘도 내 노래 들어줘서 고마워."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "그리고 요즘 이렇게 답장해 주는 사람이 있어서 좋아."
+            "text": "내일은 리허설이랑 의상 최종 확인! 나 안 늦잠 자게 응원해 줘."
         },
         {
             "type": "message",
@@ -890,42 +825,17 @@ export const story_data = {
         {
             "type": "message",
             "sender": "molala",
-            "text": "일 년에 딱 한 번뿐인 날인데!"
+            "text": "잠깐, 초대장 날짜가 하루 밀려 있었어!!"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "코랄단은 맨날 나한테 마음을 표현해 주잖아."
+            "text": "휴… 수정했어. 코랄단한테 잘못 보낼 뻔했다ㅋㅋ"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "편지도 써주고, 그림도 그려주고, 방송에 와서 같이 웃어주고."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "근데 나는 가끔 그만큼 돌려주고 있나 싶거든."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "그래서 공주절에는 진짜 잘해주고 싶어."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "내가 얼마나 고마워하는지 알려주고 싶어서."
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "…아 뭐야ㅋㅋㅋ 왜 이렇게 진지해졌지?!"
-        },
-        {
-            "type": "message",
-            "sender": "molala",
-            "text": "아무튼 이번 공주절은 기대해도 좋아!"
+            "text": "이제 남은 건 무대에 올라가는 일뿐이네. 갑자기 좀 떨려."
         },
         {
             "type": "message",
@@ -968,12 +878,12 @@ export const story_data = {
         {
             "type": "message",
             "sender": "molala",
-            "text": "아, 그리고… 내일 만나면 꼭 하고 싶은 말이 있어."
+            "text": "아, 내일 만나면 나한테 먼저 손 흔들어 줘! 못 알아보면 어떡하지ㅋㅋ"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "그러니까 기대해도 좋아! 잘 자아~"
+            "text": "알람 세 개 맞췄다. 그럼 내일 봐!"
         },
         {
             "type": "message",
@@ -990,53 +900,43 @@ export const story_data = {
         {
             "type": "image",
             "image": "day07_festival.png",
-            "text": "모라라와 코랄단이 함께 완성한 공주절"
+            "text": "공주절 공연 현장"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "단장!! 드디어 공주절이야아아!!"
+            "text": "단장!! 끝났어!!"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "준비한 노래도, 의상도, 이벤트도 다들 엄청 좋아해 줬어ㅎㅎ"
+            "text": "마지막 인사할 때 마이크가 꺼져서 나 혼자 소리 질렀잖아ㅋㅋㅋ"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "티아라도 달빛이 가득 찼고!"
+            "text": "그래도 무대 아래에서 다 같이 손 흔들어 줬어. 진짜 잘 보이더라."
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "나 이제 육지에서 숨 쉴 수 있어!"
+            "text": "그리고… 티아라가 완전히 빛났어. 이제 육지에 나갈 수 있대!"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "지금 처음 이야기했던 그 해변으로 가고 있어."
+            "text": "우리 처음 이야기했던 해변, 기억하지?"
         },
         {
             "type": "message",
             "sender": "molala",
-            "text": "조금만 기다려줘!"
+            "text": "나 지금 거기로 가고 있어. 조금만 기다려 줘!"
         },
         {
             "type": "message",
             "sender": "narration",
-            "text": "(공주절은 성공했다. 모라라는 코랄단에게 마음을 전했고, 코랄단도 그 마음에 답했다.)"
-        },
-        {
-            "type": "message",
-            "sender": "narration",
-            "text": "(하지만 나는 진짜 기사단장이 아니다. 이 휴대폰을 주운 날부터 지금까지…)"
-        },
-        {
-            "type": "message",
-            "sender": "narration",
-            "text": "(이제는 내가 누구인지, 어떤 마음으로 답장했는지 말해야 한다.)"
-        },
+            "text": "(휴대폰을 주운 바로 그곳. 이제는 화면 너머가 아닌, 직접 마주할 시간이다.)"
+        }
     ],
 };
 

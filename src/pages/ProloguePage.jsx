@@ -1,7 +1,4 @@
-
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-
 import intro_beach from '../assets/images/intro_beach.png';
 import intro_phone from '../assets/images/intro_phone.png';
 import intro_hand from '../assets/images/intro_hand.png';
@@ -10,328 +7,117 @@ import profile_sunfish from '../assets/images/profile_sunfish.png';
 const scenes = [
     {
         image: intro_beach,
-        narration: '평범한 하루의 끝.\n해변을 걷고 있었다.'
+        text: '해변을 걷다가\n모래 위에 놓인 휴대폰을 발견했다.'
     },
     {
         image: intro_phone,
-        narration: '그때, 모래사장 위에 떨어진\n휴대폰 하나를 발견했다.'
+        text: '주인이 근처에 있을까?\n주변을 둘러봐도 아무도 보이지 않는다.'
     },
     {
         image: intro_hand,
-        narration: '휴대폰을 집어 든 순간,\n화면에 메시지가 도착했다.'
+        text: '휴대폰을 조심스럽게 집어 들었다.\n화면에는 메모장이 열려 있었다.'
     }
 ];
 
-const notifications = [
-    '단자아아앙!!',
-    '아니 왜 연락이 안 되는 거야!!',
-    '무슨 일 생긴 거 아니지?'
+const memo_lines = [
+    '• 공주님 연락 확인하기',
+    '• 약속 장소: 바닷가',
+    '• 준비한 선물 챙기기',
+    '• 무엇보다 공주님을 혼자 기다리게 하지 말 것',
+    '…마지막 줄은 급하게 적은 듯 글씨가 삐뚤다.'
 ];
 
 export default function ProloguePage({ on_complete }) {
-    const [scene_index, set_scene_index] = useState(0);
-    const [previous_image, set_previous_image] = useState(null);
-    const [show_notification, set_show_notification] = useState(false);
-    const [notification_index, set_notification_index] = useState(0);
-    const [show_chat_button, set_show_chat_button] = useState(false);
-    const [is_transitioning, set_is_transitioning] = useState(false);
-
-    const background_ref = useRef(null);
-    const previous_background_ref = useRef(null);
-    const narration_ref = useRef(null);
-    const next_button_ref = useRef(null);
-    const notification_ref = useRef(null);
-    const chat_button_ref = useRef(null);
-    const timeline_ref = useRef(null);
-    const scene_index_ref = useRef(0);
-    const transitioning_ref = useRef(false);
-
-    const reduced_motion = () => {
-        return window.matchMedia(
-            '(prefers-reduced-motion: reduce)'
-        ).matches;
-    };
+    const [scene, set_scene] = useState(0);
+    const [phase, set_phase] = useState('scene');
+    const [memo_count, set_memo_count] = useState(0);
+    const [notification_visible, set_notification_visible] = useState(false);
+    const [scene_busy, set_scene_busy] = useState(false);
+    const scene_timer_ref = useRef(null);
 
     useEffect(() => {
-        const timeline = gsap.timeline();
-
-        timeline.fromTo(
-            narration_ref.current,
-            {
-                opacity: 0,
-                y: 12
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.65,
-                ease: 'power2.out'
-            }
-        );
-
-        timeline.fromTo(
-            next_button_ref.current,
-            {
-                opacity: 0,
-                y: 14
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.45,
-                ease: 'power2.out'
-            },
-            '-=0.1'
-        );
-
-        timeline_ref.current = timeline;
-
         return () => {
-            timeline.kill();
+            window.clearTimeout(scene_timer_ref.current);
         };
     }, []);
 
     useEffect(() => {
-        if (!show_notification) {
+        if (phase !== 'memo') {
             return;
         }
 
-        const timeline = gsap.timeline();
+        if (memo_count < memo_lines.length) {
+            const timer = window.setTimeout(() => {
+                set_memo_count((previous) => previous + 1);
+            }, memo_count === 0 ? 700 : 850);
 
-        timeline.fromTo(
-            notification_ref.current,
-            {
-                opacity: 0,
-                y: -20
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.4,
-                ease: 'power2.out'
-            }
-        );
+            return () => window.clearTimeout(timer);
+        }
 
-        notifications.forEach((message, index) => {
-            if (index === 0) {
-                return;
-            }
+        const timer = window.setTimeout(() => {
+            set_notification_visible(true);
+        }, 1100);
 
-            timeline.to({}, {
-                duration: 1.3,
-                onComplete: () => {
-                    set_notification_index(index);
-                }
-            });
-        });
+        return () => window.clearTimeout(timer);
+    }, [phase, memo_count]);
 
-        timeline.to({}, {
-            duration: 0.8,
-            onComplete: () => {
-                set_show_chat_button(true);
-            }
-        });
-
-        timeline_ref.current = timeline;
-
-        return () => {
-            timeline.kill();
-        };
-    }, [show_notification]);
-
-    useEffect(() => {
-        if (!show_chat_button || !chat_button_ref.current) {
+    const handle_next_scene = () => {
+        if (scene_busy || phase !== 'scene') {
             return;
         }
 
-        gsap.fromTo(
-            chat_button_ref.current,
-            {
-                opacity: 0,
-                y: 12
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
-                ease: 'power2.out'
-            }
-        );
-    }, [show_chat_button]);
+        set_scene_busy(true);
 
-    const handle_next = () => {
-        if (transitioning_ref.current || show_notification) {
+        if (scene < scenes.length - 1) {
+            scene_timer_ref.current = window.setTimeout(() => {
+                set_scene((previous) => previous + 1);
+                set_scene_busy(false);
+            }, 180);
             return;
         }
 
-        if (scene_index_ref.current >= scenes.length - 1) {
-            transitioning_ref.current = true;
-            set_is_transitioning(true);
-
-            const timeline = gsap.timeline({
-                onComplete: () => {
-                    set_show_notification(true);
-                    transitioning_ref.current = false;
-                    set_is_transitioning(false);
-                }
-            });
-
-            timeline.to(
-                [narration_ref.current, next_button_ref.current],
-                {
-                    opacity: 0,
-                    duration: 0.3,
-                    ease: 'power2.in'
-                }
-            );
-
-            return;
-        }
-
-        transitioning_ref.current = true;
-        set_is_transitioning(true);
-
-        const next_index = scene_index_ref.current + 1;
-        const old_image = scenes[scene_index_ref.current].image;
-
-        const timeline = gsap.timeline({
-            onComplete: () => {
-                transitioning_ref.current = false;
-                set_is_transitioning(false);
-            }
-        });
-
-        timeline.to(
-            [narration_ref.current, next_button_ref.current],
-            {
-                opacity: 0,
-                duration: 0.3,
-                ease: 'power2.in',
-                onComplete: () => {
-                    set_previous_image(old_image);
-                    scene_index_ref.current = next_index;
-                    set_scene_index(next_index);
-                }
-            }
-        );
-
-        timeline.add(() => {
-            requestAnimationFrame(() => {
-                if (previous_background_ref.current) {
-                    gsap.fromTo(
-                        previous_background_ref.current,
-                        {
-                            opacity: 1
-                        },
-                        {
-                            opacity: 0,
-                            duration: 0.8,
-                            ease: 'power2.inOut',
-                            onComplete: () => {
-                                set_previous_image(null);
-                            }
-                        }
-                    );
-                }
-            });
-        });
-
-        timeline.fromTo(
-            narration_ref.current,
-            {
-                opacity: 0,
-                y: 8
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                ease: 'power2.out'
-            },
-            '+=0.25'
-        );
-
-        timeline.fromTo(
-            next_button_ref.current,
-            {
-                opacity: 0,
-                y: 10
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.45,
-                ease: 'power2.out'
-            },
-            '+=0.1'
-        );
-
-        timeline_ref.current = timeline;
+        scene_timer_ref.current = window.setTimeout(() => {
+            set_phase('memo');
+            set_scene_busy(false);
+        }, 180);
     };
 
-    const handle_chat = () => {
-        if (typeof on_complete === 'function') {
-            on_complete();
+    const handle_scene_keydown = (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handle_next_scene();
         }
     };
 
     return (
         <section className="prologue_page">
             <img
-                ref={background_ref}
                 className="prologue_page__background"
-                src={scenes[scene_index].image}
+                src={scenes[scene].image}
                 alt=""
             />
+            <div className="prologue_page__shade" />
 
-            {previous_image && (
-                <img
-                    ref={previous_background_ref}
-                    className="prologue_page__background"
-                    src={previous_image}
-                    alt=""
-                    style={{
-                        zIndex: 1
-                    }}
-                />
-            )}
-
-            <div
-                className="prologue_page__shade"
-                style={{
-                    zIndex: 2
-                }}
-            />
-
-            {!show_notification && (
+            {phase === 'scene' && (
                 <div
-                    className="prologue_page__content"
-                    style={{
-                        zIndex: 3
-                    }}
+                    className="prologue_page__scene_area"
+                    role="button"
+                    tabIndex={0}
+                    aria-label="다음 장면으로 이동"
+                    onClick={handle_next_scene}
+                    onKeyDown={handle_scene_keydown}
                 >
-                    <div
-                        ref={narration_ref}
-                        className="prologue_page__narration"
-                    >
-                        {scenes[scene_index].narration}
-                    </div>
-
-                    <button
-                        ref={next_button_ref}
-                        className="prologue_page__next"
-                        type="button"
-                        disabled={is_transitioning}
-                        onClick={handle_next}
-                    >
+                    <div className="prologue_page__content" key={scene}>
+                        <p className="prologue_page__narration">
+                            {scenes[scene].text}
+                        </p>
                         <span className="prologue_page__next_arrows" aria-hidden="true">
-                            {[0, 1, 2].map((index) => (
+                            {[1, 2, 3].map((number) => (
                                 <svg
-                                    key={index}
-                                    className={`prologue_page__next_arrow prologue_page__next_arrow_${index + 1}`}
+                                    key={number}
+                                    className={`prologue_page__next_arrow prologue_page__next_arrow_${number}`}
                                     viewBox="0 0 32 16"
                                     fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
                                         d="M3 3L16 13L29 3"
@@ -343,49 +129,60 @@ export default function ProloguePage({ on_complete }) {
                                 </svg>
                             ))}
                         </span>
-                        <span className="prologue_page__next_label">다음 장면</span>
-                    </button>
+                    </div>
                 </div>
             )}
 
-            {show_notification && (
+            {phase === 'memo' && (
                 <>
-                    <div
-                        ref={notification_ref}
-                        className="prologue_page__floating"
-                        role="status"
-                        aria-live="polite"
-                    >
-                        <img
-                            className="prologue_page__floating_avatar"
-                            src={profile_sunfish}
-                            alt=""
-                        />
-
-                        <div className="prologue_page__floating_content">
-                            <strong className="prologue_page__floating_name">
-                                모라라 공주님♡
-                            </strong>
-
-                            <p className="prologue_page__floating_message">
-                                {notifications[notification_index]}
-                            </p>
+                    <div className="prologue_page__phone_screen">
+                        <div className="prologue_page__phone_top">
+                            <span>9:41</span>
+                            <span aria-hidden="true">●●● ▰</span>
                         </div>
-
-                        <span className="prologue_page__floating_time">
-                            지금
-                        </span>
+                        <div className="prologue_page__memo_heading">메모</div>
+                        <div className="prologue_page__memo_sheet">
+                            <h2 className="prologue_page__memo_title">
+                                공주절 준비 메모
+                            </h2>
+                            {memo_lines.slice(0, memo_count).map((line, index) => (
+                                <p
+                                    key={index}
+                                    className="prologue_page__memo_line"
+                                >
+                                    {line}
+                                </p>
+                            ))}
+                        </div>
                     </div>
 
-                    {show_chat_button && (
-                        <button
-                            ref={chat_button_ref}
-                            className="prologue_page__chat_button"
-                            type="button"
-                            onClick={handle_chat}
-                        >
-                            대화하기
-                        </button>
+                    {notification_visible && (
+                        <>
+                            <button
+                                className="prologue_page__notification"
+                                type="button"
+                                onClick={on_complete}
+                                aria-label="모라라 공주님의 카카오톡 메시지 확인하기"
+                            >
+                                <img src={profile_sunfish} alt="" />
+                                <span className="prologue_page__notification_copy">
+                                    <span className="prologue_page__notification_heading">
+                                        <strong>모라라 공주님♡</strong>
+                                        <span>지금</span>
+                                    </span>
+                                    <span className="prologue_page__notification_message">
+                                        단장아아앙!! 어디야? 연락이 안 돼서 걱정했잖아!
+                                    </span>
+                                </span>
+                            </button>
+                            <button
+                                className="prologue_page__open_chat"
+                                type="button"
+                                onClick={on_complete}
+                            >
+                                메시지 확인하기 <span aria-hidden="true">→</span>
+                            </button>
+                        </>
                     )}
                 </>
             )}

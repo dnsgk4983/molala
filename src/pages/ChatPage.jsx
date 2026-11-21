@@ -147,6 +147,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
     const [show_return_confirm, set_show_return_confirm] = useState(false);
     const [day_transition, set_day_transition] = useState(null);
     const [show_tiara_dialog, set_show_tiara_dialog] = useState(false);
+    const [show_memo_dialog, set_show_memo_dialog] = useState(false);
 
     const scroll_ref = useRef(null);
     const last_scrolled_message_ref = useRef(null);
@@ -522,7 +523,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
         clear_pending();
         update_game((previous) => ({
             ...previous,
-            ending_confirmed: true
+            beach_started: true
         }));
         on_enter_ending?.();
     };
@@ -741,6 +742,18 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                 </div>
                 <button
                     type="button"
+                    className="chat_page__memo_button"
+                    onClick={() => set_show_memo_dialog(true)}
+                    aria-label="주운 휴대폰의 메모장 다시 보기"
+                    title="메모장"
+                >
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <rect x="5" y="3" width="14" height="18" rx="2" />
+                        <path d="M9 8h6M9 12h6M9 16h4" />
+                    </svg>
+                </button>
+                <button
+                    type="button"
                     className="chat_page__settings_button"
                     onClick={on_open_settings}
                     aria-label="게임 설정"
@@ -841,7 +854,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                         type="button"
                         onClick={handle_enter_ending}
                     >
-                        엔딩 확인하기
+                        바다로 가자
                     </button>
                 )}
 
@@ -891,6 +904,41 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                     <span aria-hidden="true" style={{ fontSize: '25px' }}>
                         ✦
                     </span>
+                </div>
+            )}
+
+            {show_memo_dialog && (
+                <div
+                    className="chat_page__memo_overlay"
+                    role="presentation"
+                    onClick={() => set_show_memo_dialog(false)}
+                >
+                    <div
+                        className="chat_page__memo_dialog"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="chat_memo_title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="chat_page__memo_dialog_header">
+                            <span>메모</span>
+                            <button
+                                type="button"
+                                aria-label="메모장 닫기"
+                                onClick={() => set_show_memo_dialog(false)}
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <div className="chat_page__memo_dialog_body">
+                            <h2 id="chat_memo_title">공주절 준비 메모</h2>
+                            <p>• 공주님 연락 확인하기</p>
+                            <p>• 약속 장소: 바닷가</p>
+                            <p>• 준비한 선물 챙기기</p>
+                            <p>• 무엇보다 공주님을 혼자 기다리게 하지 말 것</p>
+                            <p>…마지막 줄은 급하게 적은 듯 글씨가 삐뚤다.</p>
+                        </div>
+                    </div>
                 </div>
             )}
 

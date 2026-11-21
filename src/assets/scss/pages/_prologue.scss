@@ -1,4 +1,3 @@
-
 @use '../abstracts/mixins' as *;
 
 .prologue_page {
@@ -6,7 +5,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #261d37;
+    background: #2a203b;
 
     &__background {
         position: absolute;
@@ -14,89 +13,64 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center;
     }
 
     &__shade {
         position: absolute;
         inset: 0;
+        background: linear-gradient(180deg, rgba(20, 14, 30, 0.08), rgba(20, 14, 30, 0.55));
         pointer-events: none;
-        background: linear-gradient(
-            180deg,
-            rgba(28, 20, 42, 0.04) 0%,
-            rgba(28, 20, 42, 0.08) 50%,
-            rgba(28, 20, 42, 0.35) 100%
-        );
+    }
+
+    &__scene_area {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 3px solid #fff4fc;
+            outline-offset: -5px;
+        }
     }
 
     &__content {
-        position: relative;
-        z-index: 2;
+        position: absolute;
+        @include vw(right, 36px);
+        @include vw(bottom, 100px);
+        @include vw(left, 36px);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-end;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        @include vw(padding-right, 40px);
-        @include vw(padding-bottom, 90px);
-        @include vw(padding-left, 40px);
+        @include vw(gap, 26px);
+        pointer-events: none;
+        animation: molala_prologue_text_in 420ms ease-out both;
     }
 
     &__narration {
+        margin: 0;
         width: 100%;
-        color: #fff9f6;
+        @include vw(font-size, 27px);
+        color: #ffffff;
+        font-weight: 700;
+        line-height: 1.6;
         text-align: center;
         white-space: pre-line;
-        font-weight: 700;
-        line-height: 1.8;
-        text-shadow: 0 2px 8px rgba(20, 12, 32, 0.5);
-        @include vw(font-size, 27px);
-        @include vw(margin-bottom, 30px);
-    }
-
-    &__next {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        width: 100%;
-        box-sizing: border-box;
-        border: 2px solid #fff3e8;
-        color: #8d547b;
-        background: #fff0f6;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 6px 20px rgba(25, 15, 35, 0.18);
-        @include vw(min-height, 80px);
-        @include vw(padding, 18px);
-        @include vw(border-radius, 40px);
-        @include vw(font-size, 26px);
-    }
-
-    &__next {
-        flex-direction: column;
-        @include vw(gap, 8);
-        background: rgba(255, 240, 246, 0.86);
-        border-color: rgba(255, 243, 232, 0.9);
+        word-break: keep-all;
+        overflow-wrap: break-word;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
     }
 
     &__next_arrows {
         display: flex;
         flex-direction: column;
         align-items: center;
-        @include vw(height, 66);
-        @include vw(width, 56);
-        animation: prologue_arrow_float 1.9s ease-in-out infinite;
+        animation: prologue_arrow_float 1.8s ease-in-out infinite;
     }
 
     &__next_arrow {
-        display: block;
-        @include vw(width, 38);
-        @include vw(height, 20);
-        color: #b76f9e;
-        animation: prologue_arrow_shimmer 1.9s ease-in-out infinite;
+        @include vw(width, 40px);
+        @include vw(height, 21px);
     }
 
     &__next_arrow_1 {
@@ -105,213 +79,244 @@
 
     &__next_arrow_2 {
         opacity: 0.5;
-        animation-delay: 0.12s;
     }
 
     &__next_arrow_3 {
         opacity: 1;
-        animation-delay: 0.24s;
     }
 
-    &__next_label {
-        @include vw(font-size, 20);
-        letter-spacing: 0.08em;
-    }
-
-    &__floating {
+    &__phone_screen {
         position: absolute;
-        z-index: 5;
+        @include vw(top, 135px);
+        @include vw(right, 36px);
+        @include vw(bottom, 115px);
+        @include vw(left, 36px);
         display: flex;
-        align-items: center;
-        box-sizing: border-box;
-        width: auto;
-        background: rgba(255, 248, 253, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 8px 28px rgba(45, 25, 50, 0.16);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        @include vw(top, 65px);
-        @include vw(left, 35px);
-        @include vw(right, 35px);
-        @include vw(gap, 15px);
-        @include vw(padding, 18px);
-        @include vw(border-radius, 22px);
-    }
-
-    &__floating_avatar {
-        display: block;
-        flex-shrink: 0;
-        object-fit: cover;
-        border-radius: 50%;
-        background: #f4dbe9;
-        @include vw(width, 58px);
-        @include vw(height, 58px);
-    }
-
-    &__floating_content {
-        display: flex;
-        flex: 1;
         flex-direction: column;
-        min-width: 0;
-        @include vw(gap, 5px);
-    }
-
-    &__floating_name {
-        display: block;
         overflow: hidden;
-        color: #a34e7c;
-        font-weight: 700;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        @include vw(font-size, 21px);
+        @include vw(border-radius, 36px);
+        background: #fffafc;
+        box-shadow: 0 14px 48px rgba(15, 10, 24, 0.36);
+        animation: molala_phone_appear 500ms ease-out both;
     }
 
-    &__floating_message {
+    &__phone_top {
+        display: flex;
+        justify-content: space-between;
+        @include vw(padding, 22px);
+        color: #76566c;
+        @include vw(font-size, 17px);
+    }
+
+    &__memo_heading {
+        @include vw(padding, 26px);
+        @include vw(font-size, 25px);
+        color: #9b5e81;
+        font-weight: 800;
+        border-bottom: 1px solid #f1dce7;
+    }
+
+    &__memo_sheet {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        @include vw(padding, 30px);
+        color: #503c4c;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+    }
+
+    &__memo_title {
         margin: 0;
-        overflow: hidden;
-        color: #65495b;
-        font-weight: 500;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        @include vw(font-size, 20px);
+        @include vw(margin-bottom, 30px);
+        @include vw(font-size, 29px);
+        font-weight: 800;
+        line-height: 1.4;
     }
 
-    &__floating_time {
-        align-self: flex-start;
-        flex-shrink: 0;
-        color: #b7a1b0;
-        @include vw(font-size, 16px);
+    &__memo_line {
+        margin: 0;
+        @include vw(margin-bottom, 22px);
+        @include vw(font-size, 22px);
+        line-height: 1.55;
+        animation: molala_memo_line_in 480ms ease-out both;
     }
 
-    &__chat_button {
+    &__notification {
         position: absolute;
         z-index: 5;
+        @include vw(top, 40px);
+        @include vw(right, 36px);
+        @include vw(left, 36px);
         display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        border: 2px solid rgba(255, 255, 255, 0.85);
-        background: #fff0f6;
-        color: #9c4e7b;
-        font-weight: 800;
+        align-items: flex-start;
+        @include vw(gap, 16px);
+        @include vw(padding, 20px);
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        @include vw(border-radius, 26px);
+        background: rgba(255, 250, 253, 0.96);
+        box-shadow: 0 12px 32px rgba(37, 22, 46, 0.24);
+        color: #5f3b52;
+        text-align: left;
         cursor: pointer;
-        box-shadow: 0 8px 28px rgba(40, 20, 45, 0.2);
-        @include vw(left, 65px);
-        @include vw(right, 65px);
-        @include vw(bottom, 110px);
-        @include vw(min-height, 85px);
-        @include vw(border-radius, 45px);
-        @include vw(font-size, 28px);
-        @include vw(padding, 18px);
+        animation: molala_notification_drop 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
-        &:active {
-            transform: scale(0.97);
+        img {
+            flex-shrink: 0;
+            @include vw(width, 62px);
+            @include vw(height, 62px);
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        &:hover {
+            background: #ffffff;
         }
 
         &:focus-visible {
-            outline: 3px solid #ffffff;
+            outline: 3px solid #784364;
+            outline-offset: 3px;
+        }
+    }
+
+    &__notification_copy {
+        display: flex;
+        flex: 1;
+        min-width: 0;
+        flex-direction: column;
+        @include vw(gap, 8px);
+    }
+
+    &__notification_heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include vw(gap, 12px);
+
+        strong {
+            @include vw(font-size, 21px);
+            font-weight: 800;
+        }
+
+        span {
+            flex-shrink: 0;
+            @include vw(font-size, 16px);
+            color: #9a7c8f;
+        }
+    }
+
+    &__notification_message {
+        @include vw(font-size, 19px);
+        line-height: 1.45;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+    }
+
+    &__open_chat {
+        position: absolute;
+        z-index: 5;
+        @include vw(right, 55px);
+        @include vw(bottom, 136px);
+        @include vw(left, 55px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(gap, 12px);
+        @include vw(min-height, 72px);
+        @include vw(padding, 14px);
+        border: 0;
+        @include vw(border-radius, 18px);
+        background: #ad5b8c;
+        color: #ffffff;
+        font-weight: 800;
+        @include vw(font-size, 23px);
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(102, 48, 83, 0.24);
+        animation: molala_memo_line_in 500ms 160ms ease-out both;
+        transition: background-color 200ms ease, transform 200ms ease;
+
+        &:hover {
+            background: #994b7b;
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:focus-visible {
+            outline: 3px solid #fff3fa;
             outline-offset: 3px;
         }
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .prologue_page__next,
-    .prologue_page__chat_button {
-        transition: none;
+@keyframes molala_phone_appear {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes molala_prologue_text_in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes molala_memo_line_in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes molala_notification_drop {
+    from {
+        opacity: 0;
+        transform: translateY(-35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
 @keyframes prologue_arrow_float {
     0%, 100% {
-        transform: translateY(-3px);
+        transform: translateY(0);
     }
-    50% {
-        transform: translateY(6px);
-    }
-}
 
-@keyframes prologue_arrow_shimmer {
-    0%, 100% {
-        filter: brightness(0.92);
-    }
     50% {
-        filter: brightness(1.2);
+        transform: translateY(8px);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .prologue_page__content,
     .prologue_page__next_arrows,
-    .prologue_page__next_arrow {
+    .prologue_page__phone_screen,
+    .prologue_page__memo_line,
+    .prologue_page__notification,
+    .prologue_page__open_chat {
         animation: none;
-    }
-}
-
-/* The arrow itself is the complete advance control. */
-.prologue_page {
-    &__next {
-        align-self: center;
-        width: auto;
-        min-height: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        box-shadow: none;
-        color: #f6d0e6;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-
-        &:hover {
-            background: transparent;
-            box-shadow: none;
-        }
-
-        &:focus-visible {
-            outline: 2px solid #fff3e8;
-            outline-offset: 6px;
-        }
-    }
-
-    &__next_arrows {
-        @include vw(width, 64);
-        @include vw(height, 70);
-    }
-
-    &__next_arrow {
-        color: #f8d1e7;
-        filter: drop-shadow(0 2px 5px rgba(67, 28, 62, 0.65));
-    }
-
-    &__next_label {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
-    }
-}
-
-/* Large invisible touch target; only the arrows remain visible. */
-.prologue_page {
-    &__next {
-        position: relative;
-        width: 100%;
-        @include vw(min-height, 125px);
-        @include vw(padding-top, 20px);
-        @include vw(padding-bottom, 20px);
-        background: transparent;
-        border: 0;
-        box-shadow: none;
-        touch-action: manipulation;
-    }
-
-    &__next_arrows {
-        flex-shrink: 0;
-        pointer-events: none;
+        transition: none;
     }
 }

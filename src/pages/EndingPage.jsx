@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { load_game } from '../utils/save_game.js';
+import { unlock_ending } from '../utils/unlocks.js';
 
 const image_modules = import.meta.glob(
     '../assets/images/**/*.{png,jpg,jpeg,webp}',
@@ -56,12 +57,14 @@ function get_ending_type(game_data) {
     return 'bad';
 }
 
-function EndingPage({ on_restart }) {
+function EndingPage({ on_restart, on_return_title }) {
     const content_ref = useRef(null);
-    const [ending] = useState(() => {
-        const game_data = load_game();
-        return ending_data[get_ending_type(game_data)];
-    });
+    const [ending_type] = useState(() => get_ending_type(load_game()));
+    const ending = ending_data[ending_type];
+
+    useEffect(() => {
+        unlock_ending(ending_type);
+    }, [ending_type]);
 
     const ending_image = image_map[ending.image];
 
@@ -165,13 +168,14 @@ function EndingPage({ on_restart }) {
                         모라라 공주님과 함께한 7일
                     </p>
 
-                    {typeof on_restart === 'function' && (
-                        <button
-                            className="ending_page__restart"
-                            type="button"
-                            onClick={on_restart}
-                        >
-                            마지막 이야기 보기
+                    {ending_type === 'true' && typeof on_restart === 'function' && (
+                        <button className="ending_page__restart" type="button" onClick={on_restart}>
+                            비밀 후일담 보기
+                        </button>
+                    )}
+                    {ending_type !== 'true' && (
+                        <button className="ending_page__restart" type="button" onClick={on_return_title}>
+                            메인으로 돌아가기
                         </button>
                     )}
 

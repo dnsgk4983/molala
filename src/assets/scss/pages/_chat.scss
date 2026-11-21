@@ -1064,3 +1064,91 @@
         outline-offset: 3px;
     }
 }
+
+// Chat memo: same content as the prologue, opened independently of settings.
+.chat_page {
+    &__memo_button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        @include vw(width, 48px);
+        @include vw(height, 48px);
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background-color: #fff0f5;
+        color: #a45b7d;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f8d5e3;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #a45b7d;
+            outline-offset: 2px;
+        }
+    }
+
+    &__memo_overlay {
+        @include ui.modal_backdrop;
+        z-index: 95;
+        @include vw(padding, 28px);
+        background: rgba(42, 27, 57, 0.5);
+    }
+
+    &__memo_dialog {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        @include vw(max-width, 590px);
+        @include vw(max-height, 880px);
+        overflow: hidden;
+        @include vw(border-radius, 26px);
+        background: #fffafc;
+        box-shadow: 0 16px 45px rgba(63, 30, 62, 0.2);
+    }
+
+    &__memo_dialog_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include vw(padding, 24px);
+        border-bottom: 1px solid #f1dce7;
+        color: #995b80;
+        font-weight: 800;
+        @include vw(font-size, 24px);
+
+        button {
+            @include vw(width, 44px);
+            @include vw(height, 44px);
+            border: 0;
+            background: transparent;
+            color: #995b80;
+            @include vw(font-size, 34px);
+            cursor: pointer;
+        }
+    }
+
+    &__memo_dialog_body {
+        overflow-y: auto;
+        @include vw(padding, 30px);
+        color: #563c4d;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+
+        h2 {
+            margin: 0;
+            @include vw(margin-bottom, 30px);
+            @include vw(font-size, 29px);
+        }
+
+        p {
+            margin: 0;
+            @include vw(margin-bottom, 22px);
+            @include vw(font-size, 22px);
+            line-height: 1.55;
+        }
+    }
+}

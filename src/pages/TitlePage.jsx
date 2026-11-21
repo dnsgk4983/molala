@@ -6,6 +6,7 @@ function TitlePage({
     on_start,
     on_settings,
     on_continue,
+    on_gallery,
     has_save
 }) {
     const page_ref = useRef(null);
@@ -148,6 +149,9 @@ function TitlePage({
                         </button>
                     )}
 
+                    <button className="title_page__continue" type="button" onClick={on_gallery}>
+                        <span>추억 갤러리</span>
+                    </button>
                     <span className="title_page__credit">
                         A FANMADE STORY FOR MOLALA
                     </span>
