@@ -13,12 +13,14 @@ export function load_preferences() {
 
         return {
             message_speed: speed_options[saved.message_speed] ? saved.message_speed : 'normal',
-            font_scale: [0.85, 1, 1.15, 1.3].includes(saved.font_scale) ? saved.font_scale : 1
+            font_scale: [0.85, 1, 1.15, 1.3].includes(saved.font_scale) ? saved.font_scale : 1,
+            chat_mode: saved.chat_mode === 'auto' ? 'auto' : 'manual'
         };
     } catch {
         return {
             message_speed: 'normal',
-            font_scale: 1
+            font_scale: 1,
+            chat_mode: 'manual'
         };
     }
 }

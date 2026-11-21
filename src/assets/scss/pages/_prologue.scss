@@ -320,3 +320,112 @@
         transition: none;
     }
 }
+
+// The memo is now the entire opening scene, not a phone-sized popup.
+.prologue_page--full_memo {
+    background: #fffafc;
+
+    .prologue_page__full_memo {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        background: #fffafc;
+    }
+
+    .prologue_page__memo_sheet {
+        @include vw(padding-bottom, 140px);
+    }
+
+    .prologue_page__thought_overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        @include vw(padding, 36px);
+        @include vw(padding-bottom, 154px);
+        pointer-events: auto;
+    }
+
+    .prologue_page__thought_backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(36, 23, 48, 0.36);
+        pointer-events: none;
+        animation: prologue_dim_fade_in 380ms ease-out both;
+    }
+
+    .prologue_page__thought_dialog {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        @include vw(padding, 28px);
+        @include vw(border-radius, 20px);
+        background: rgba(255, 247, 251, 0.94);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 8px 26px rgba(30, 16, 38, 0.18);
+        text-align: center;
+        pointer-events: auto;
+        animation: molala_memo_line_in 480ms ease-out both;
+    }
+
+    .prologue_page__thought_text {
+        margin: 0;
+        @include vw(font-size, 23px);
+        color: #77516d;
+        font-weight: 700;
+        line-height: 1.65;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+    }
+
+    .prologue_page__thought_hint {
+        display: block;
+        @include vw(margin-top, 8px);
+        @include vw(font-size, 22px);
+        color: #b5769b;
+    }
+
+    .prologue_page__notification {
+        @include vw(top, 24px);
+    }
+
+    .prologue_page__open_chat {
+        @include vw(bottom, 34px);
+    }
+}
+
+.prologue_page {
+    &__thought_dialog {
+        display: block;
+        width: 100%;
+        border: 0;
+        font-family: inherit;
+        text-align: center;
+        cursor: pointer;
+        appearance: none;
+
+        &:focus-visible {
+            outline: 2px solid #b66a9d;
+            outline-offset: 3px;
+        }
+    }
+}
+
+@keyframes prologue_dim_fade_in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.prologue_page__full_memo > .phone_status_bar {
+    position: relative;
+    z-index: 5;
+    flex: 0 0 auto;
+}

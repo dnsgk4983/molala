@@ -10,6 +10,7 @@ const size_options = [
 function StartSettings({ initial_preferences, on_confirm, on_back, on_return_title }) {
     const [message_speed, set_message_speed] = useState(initial_preferences.message_speed);
     const [font_scale, set_font_scale] = useState(initial_preferences.font_scale);
+    const [chat_mode, set_chat_mode] = useState(initial_preferences.chat_mode || 'manual');
     const [show_return_confirm, set_show_return_confirm] = useState(false);
 
     useEffect(() => {
@@ -70,6 +71,33 @@ function StartSettings({ initial_preferences, on_confirm, on_back, on_return_tit
                 </fieldset>
 
                 <fieldset className="start_settings__group">
+                    <legend>대화 진행 방식</legend>
+                    <div className="start_settings__options">
+                        <button
+                            type="button"
+                            className={`start_settings__option ${chat_mode === 'manual' ? 'start_settings__option_active' : ''}`}
+                            aria-pressed={chat_mode === 'manual'}
+                            onClick={() => set_chat_mode('manual')}
+                        >
+                            직접 터치
+                        </button>
+                        <button
+                            type="button"
+                            className={`start_settings__option ${chat_mode === 'auto' ? 'start_settings__option_active' : ''}`}
+                            aria-pressed={chat_mode === 'auto'}
+                            onClick={() => set_chat_mode('auto')}
+                        >
+                            자동 진행
+                        </button>
+                    </div>
+                    <p className="start_settings__description">
+                        {chat_mode === 'manual'
+                            ? '화면을 터치하면 대사가 하나씩 나타납니다.'
+                            : '대사가 자동으로 나타나며 선택지에서는 멈춥니다.'}
+                    </p>
+                </fieldset>
+
+                <fieldset className="start_settings__group">
                     <legend>글씨 크기</legend>
                     <div className="start_settings__options">
                         {size_options.map((option) => (
@@ -93,7 +121,7 @@ function StartSettings({ initial_preferences, on_confirm, on_back, on_return_tit
                     <button
                         type="button"
                         className="start_settings__confirm"
-                        onClick={() => on_confirm({ message_speed, font_scale })}
+                        onClick={() => on_confirm({ message_speed, font_scale, chat_mode })}
                     >
                         설정 저장
                     </button>

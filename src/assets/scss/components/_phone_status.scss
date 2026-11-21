@@ -1,0 +1,51 @@
+@use '../abstracts/mixins' as *;
+
+.phone_status_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    @include vw(min-height, 52px);
+    @include vw(padding-top, 12px);
+    @include vw(padding-right, 23px);
+    @include vw(padding-bottom, 10px);
+    @include vw(padding-left, 23px);
+    box-sizing: border-box;
+    background: #211b2c;
+    border-bottom: 1px solid #51435d;
+    color: #fff4fc;
+
+    &__date {
+        @include vw(font-size, 19px);
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    &__indicators {
+        display: flex;
+        align-items: center;
+        @include vw(gap, 6px);
+
+        svg {
+            display: block;
+            @include vw(width, 21px);
+            @include vw(height, 19px);
+            fill: currentColor;
+        }
+
+        svg:last-child {
+            @include vw(width, 25px);
+        }
+    }
+}
+
+// Keep the dark phone status area visually separate from both app headers.
+.chat_page__header > .phone_status_bar,
+.prologue_page__full_memo > .phone_status_bar {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 5;
+    background: #211b2c;
+    color: #fff4fc;
+}

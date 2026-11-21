@@ -1,0 +1,234 @@
+@use '../abstracts/mixins' as *;
+
+// Artwork is a single 941 x 1672 coordinate system.
+// Background and transparent frame share the exact same bounds.
+.title_phone {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+
+    &__background_art,
+    &__frame {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    &__background_art {
+        z-index: 0;
+    }
+
+    &__frame {
+        z-index: 3;
+    }
+
+    &__screen {
+        position: absolute;
+        @include vw(top, 170px);
+        @include vw(right, 152px);
+        @include vw(bottom, 214px);
+        @include vw(left, 152px);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__sr_only {
+        position: absolute;
+        @include vw(width, 1px);
+        @include vw(height, 1px);
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    &__bottom {
+        position: relative;
+        width: 100%;
+        margin-top: auto;
+        @include vw(margin-bottom, 34px);
+        pointer-events: auto;
+    }
+
+    &__slide_track {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        @include vw(height, 76px);
+        @include vw(padding, 6px);
+        @include vw(border-radius, 40px);
+        border: 1px solid rgba(255, 242, 252, 0.9);
+        overflow: hidden;
+        background: rgba(64, 37, 115, 0.72);
+        box-shadow: 0 5px 20px rgba(38, 19, 85, 0.25);
+        backdrop-filter: blur(10px);
+    }
+
+    &__slide_fill {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        @include vw(border-radius, 40px);
+        background: linear-gradient(90deg, #f6a9d4, #e67dc2 65%, #fff1fb);
+        box-shadow: 0 0 18px rgba(255, 196, 235, 0.65);
+        transition: width 280ms ease-out;
+        pointer-events: none;
+    }
+
+    &__slide_track_complete {
+        box-shadow: 0 0 24px rgba(255, 199, 239, 0.95);
+    }
+
+    &__slide_label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(padding-left, 28px);
+        @include vw(font-size, 19px);
+        font-weight: 800;
+        color: #fff8fc;
+        pointer-events: none;
+        text-shadow: 0 1px 5px rgba(30, 20, 65, 0.6);
+    }
+
+    &__slide_thumb {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(gap, 4px);
+        @include vw(width, 62px);
+        @include vw(height, 62px);
+        @include vw(border-radius, 34px);
+        border: 0;
+        background: linear-gradient(145deg, #fffdfd, #ffcae6);
+        color: #a45088;
+        @include vw(font-size, 26px);
+        font-weight: 800;
+        box-shadow: 0 3px 12px rgba(36, 15, 74, 0.35);
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+        z-index: 1;
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+    }
+
+    &__utilities {
+        display: flex;
+        @include vw(gap, 18px);
+        @include vw(margin-top, 24px);
+
+        button {
+            flex: 1;
+            @include vw(min-height, 56px);
+            @include vw(border-radius, 18px);
+            border: 1px solid rgba(255, 245, 253, 0.8);
+            background: rgba(64, 34, 112, 0.68);
+            color: #ffffff;
+            @include vw(font-size, 17px);
+            font-weight: 800;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+    }
+
+    &__modal_backdrop {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(padding, 32px);
+        background: rgba(28, 16, 57, 0.68);
+        z-index: 100;
+    }
+
+    &__modal {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        @include vw(max-width, 440px);
+        @include vw(gap, 15px);
+        @include vw(padding, 30px);
+        @include vw(border-radius, 26px);
+        background: #fff8fc;
+        color: #633c57;
+        text-align: center;
+
+        h2 {
+            @include vw(font-size, 25px);
+        }
+
+        p {
+            @include vw(margin-bottom, 8px);
+            @include vw(font-size, 17px);
+            line-height: 1.6;
+        }
+
+        button {
+            @include vw(min-height, 56px);
+            @include vw(border-radius, 14px);
+            @include vw(font-size, 19px);
+            font-weight: 800;
+            cursor: pointer;
+        }
+    }
+
+    &__modal_primary {
+        border: 0;
+        background: #ad5b8a;
+        color: #ffffff;
+    }
+
+    &__modal_secondary {
+        border: 1px solid #e3bfd2;
+        background: #ffffff;
+        color: #885b75;
+    }
+
+    &__modal_cancel {
+        border: 0;
+        background: transparent;
+        color: #98738b;
+    }
+}
+
+
+.title_phone {
+    &__slide_thumb {
+        box-shadow: 0 2px 8px rgba(36, 15, 74, 0.25);
+        transition: box-shadow 180ms ease-out;
+
+        &:active {
+            box-shadow: 0 2px 12px rgba(255, 225, 246, 0.7);
+        }
+    }
+
+    &__slide_track_complete {
+        box-shadow: 0 0 12px rgba(255, 199, 239, 0.65);
+    }
+}

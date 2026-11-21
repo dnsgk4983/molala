@@ -19,11 +19,81 @@
         align-items: center;
         flex-shrink: 0;
         @include vw(gap, 12);
-        @include vw(height, 130);
+        @include vw(height, 106);
         @include vw(padding, 20);
         background-color: #ffffff;
         box-shadow: 0 4px 18px rgba(122, 69, 96, 0.08);
         z-index: $z_ui;
+    }
+
+    &__status_bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        @include vw(min-height, 42px);
+        @include vw(padding-left, 24px);
+        @include vw(padding-right, 24px);
+        background-color: #fffafd;
+        color: #9e6685;
+        @include vw(font-size, 17px);
+        border-bottom: 1px solid #f2e2ec;
+
+        strong {
+            @include vw(font-size, 18px);
+            font-weight: 800;
+            color: #895173;
+        }
+    }
+
+    &__status_clock,
+    &__status_icons {
+        @include vw(min-width, 70px);
+        @include vw(font-size, 14px);
+    }
+
+    &__status_icons {
+        text-align: right;
+        letter-spacing: 0.05em;
+    }
+
+    &__affection_progress {
+        flex-shrink: 0;
+        @include vw(padding-top, 15px);
+        @include vw(padding-right, 26px);
+        @include vw(padding-bottom, 18px);
+        @include vw(padding-left, 26px);
+        background-color: #ffffff;
+        border-bottom: 1px solid #f2dfe9;
+    }
+
+    &__affection_progress_label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include vw(margin-bottom, 9px);
+        @include vw(font-size, 17px);
+        color: #98647f;
+
+        strong {
+            @include vw(font-size, 18px);
+            color: #a34d7e;
+        }
+    }
+
+    &__affection_progress_track {
+        overflow: hidden;
+        width: 100%;
+        @include vw(height, 12px);
+        @include vw(border-radius, 9px);
+        background-color: #f4dfe9;
+    }
+
+    &__affection_progress_fill {
+        height: 100%;
+        @include vw(border-radius, 9px);
+        background: linear-gradient(90deg, #e8a1c1, #b45c93);
+        transition: width 450ms ease;
     }
 
     &__avatar_reaction_wrap {
@@ -404,24 +474,6 @@
         @include vw(font-size, 22px);
         line-height: 1.5;
         color: #a47892;
-    }
-
-    &__next_day_button {
-        @include vw(min-height, 78px);
-        @include vw(font-size, 25px);
-        border-color: #cf8cb5;
-        background-color: #cf8cb5;
-        color: #ffffff;
-        font-weight: 700;
-
-        &:hover,
-        &:active {
-            background-color: #bc76a3;
-        }
-
-        span {
-            @include vw(margin-left, 8px);
-        }
     }
 
     &__footer {
@@ -1065,90 +1117,462 @@
     }
 }
 
-// Chat memo: same content as the prologue, opened independently of settings.
+// Mobile status bar, profile and affection are one white header.
 .chat_page {
-    &__memo_button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        @include vw(width, 48px);
-        @include vw(height, 48px);
-        padding: 0;
-        border: none;
-        border-radius: 50%;
-        background-color: #fff0f5;
-        color: #a45b7d;
-        cursor: pointer;
-
-        &:hover {
-            background-color: #f8d5e3;
-        }
-
-        &:focus-visible {
-            outline: 2px solid #a45b7d;
-            outline-offset: 2px;
-        }
-    }
-
-    &__memo_overlay {
-        @include ui.modal_backdrop;
-        z-index: 95;
-        @include vw(padding, 28px);
-        background: rgba(42, 27, 57, 0.5);
-    }
-
-    &__memo_dialog {
+    &__header {
         display: flex;
         flex-direction: column;
-        width: 100%;
-        @include vw(max-width, 590px);
-        @include vw(max-height, 880px);
-        overflow: hidden;
-        @include vw(border-radius, 26px);
-        background: #fffafc;
-        box-shadow: 0 16px 45px rgba(63, 30, 62, 0.2);
+        align-items: stretch;
+        height: auto;
+        @include vw(gap, 0px);
+        @include vw(padding, 0px);
+        background: #ffffff;
     }
 
-    &__memo_dialog_header {
+    &__status_bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        @include vw(padding, 24px);
-        border-bottom: 1px solid #f1dce7;
-        color: #995b80;
+        @include vw(min-height, 40px);
+        @include vw(padding-left, 24px);
+        @include vw(padding-right, 24px);
+        @include vw(font-size, 16px);
+        font-weight: 700;
+        color: #a36c8c;
+    }
+
+    &__status_icons {
+        @include vw(font-size, 13px);
+        letter-spacing: 0.1em;
+        color: #9c7892;
+    }
+
+    &__header_main {
+        display: flex;
+        align-items: center;
+        @include vw(gap, 12px);
+        @include vw(min-height, 98px);
+        @include vw(padding-left, 20px);
+        @include vw(padding-right, 20px);
+    }
+
+    &__affection_progress {
+        flex-shrink: 0;
+        @include vw(padding-top, 8px);
+        @include vw(padding-right, 24px);
+        @include vw(padding-bottom, 18px);
+        @include vw(padding-left, 24px);
+        border-top: 1px solid #f6e4ee;
+        background: #ffffff;
+    }
+
+    &__advance_button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        @include vw(min-height, 66px);
+        @include vw(gap, 14px);
+        @include vw(border-radius, 16px);
+        @include vw(font-size, 22px);
         font-weight: 800;
-        @include vw(font-size, 24px);
+        border: 1px solid #eab5d0;
+        background: #ae5c8d;
+        color: #ffffff;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 2px solid #8b4773;
+            outline-offset: 2px;
+        }
+    }
+}
+
+// Header: phone status row / profile row / affection row, all on white.
+.chat_page {
+    &__header {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+        align-items: stretch;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 0;
+        gap: 0;
+        overflow: visible;
+        background: #ffffff;
+        box-sizing: border-box;
+    }
+
+    &__status_bar {
+        position: relative;
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        @include vw(min-height, 32px);
+        @include vw(padding-top, 6px);
+        @include vw(padding-right, 22px);
+        @include vw(padding-bottom, 2px);
+        @include vw(padding-left, 22px);
+        box-sizing: border-box;
+        background: #ffffff;
+        border: 0;
+    }
+
+    &__status_date {
+        display: inline-block;
+        @include vw(font-size, 15px);
+        font-weight: 700;
+        color: #a46b8d;
+        white-space: nowrap;
+    }
+
+    &__header_main {
+        grid-row: 2;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        @include vw(min-height, 90px);
+        @include vw(padding-top, 8px);
+        @include vw(padding-right, 22px);
+        @include vw(padding-bottom, 12px);
+        @include vw(padding-left, 22px);
+        box-sizing: border-box;
+        background: #ffffff;
+    }
+
+    &__affection_progress {
+        grid-row: 3;
+        display: block;
+        width: 100%;
+        @include vw(padding-top, 12px);
+        @include vw(padding-right, 22px);
+        @include vw(padding-bottom, 16px);
+        @include vw(padding-left, 22px);
+        box-sizing: border-box;
+        background: #ffffff;
+        border-top: 1px solid #f7eaf0;
+        border-bottom: 1px solid #f1dce7;
+    }
+}
+
+// DAY completion CTA: intentionally stronger than the generic choice button.
+.chat_page__footer .chat_page__choice.chat_page__next_day_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include vw(gap, 12px);
+    width: 100%;
+    @include vw(min-height, 78px);
+    @include vw(border-radius, 18px);
+    border: 1px solid #b96f9b;
+    background: #b96f9b;
+    color: #ffffff;
+    @include vw(font-size, 24px);
+    font-weight: 800;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 180ms ease, transform 180ms ease;
+
+    span {
+        color: inherit;
+        transition: transform 180ms ease;
+    }
+
+    &:hover {
+        background: #a65a89;
+        transform: translateY(-2px);
+
+        span {
+            transform: translateX(4px);
+        }
+    }
+
+    &:active {
+        background: #934b79;
+        transform: translateY(0);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #82406d;
+        outline-offset: 3px;
+    }
+}
+
+// First-message prompt; disappears as soon as the first message is displayed.
+.chat_page {
+    &__start_guide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        @include vw(gap, 18px);
+        @include vw(min-height, 420px);
+        @include vw(padding, 36px);
+        text-align: center;
+        color: #875573;
+        animation: chat_start_guide_appear 550ms ease-out both;
+
+        strong {
+            @include vw(font-size, 25px);
+            font-weight: 800;
+            word-break: keep-all;
+        }
+
+        > span:not(.chat_page__start_guide_icon) {
+            @include vw(font-size, 19px);
+            line-height: 1.6;
+            color: #a77794;
+            word-break: keep-all;
+        }
+    }
+
+    &__start_guide_icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(width, 78px);
+        @include vw(height, 78px);
+        @include vw(border-radius, 40px);
+        background: #f8dbea;
+        color: #ad608e;
+        @include vw(font-size, 42px);
+        box-shadow: 0 0 0 8px rgba(248, 219, 234, 0.38);
+    }
+
+    &__start_guide_action {
+        @include vw(margin-top, 18px);
+        @include vw(min-height, 64px);
+        @include vw(padding-right, 30px);
+        @include vw(padding-left, 30px);
+        @include vw(border-radius, 16px);
+        border: 1px solid #ad608e;
+        background: #ad608e;
+        color: #ffffff;
+        @include vw(font-size, 21px);
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(135, 65, 111, 0.15);
+        transition: transform 180ms ease, background-color 180ms ease;
+
+        &:hover {
+            background: #99517d;
+            transform: translateY(-2px);
+        }
+
+        &:focus-visible {
+            outline: 2px solid #87416f;
+            outline-offset: 3px;
+        }
+    }
+}
+
+@keyframes chat_start_guide_appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat_page {
+    &__music_event {
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(123, 78, 102, 0.13);
+        }
+
+        &:focus-visible {
+            outline: 2px solid #b85e91;
+            outline-offset: 3px;
+        }
+    }
+
+    &__video_overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(padding, 24px);
+        background: rgba(28, 16, 45, 0.78);
+    }
+
+    &__video_dialog {
+        width: 100%;
+        max-width: 640px;
+        @include vw(border-radius, 18px);
+        overflow: hidden;
+        background: #fff7fb;
+        box-shadow: 0 12px 42px rgba(25, 12, 34, 0.3);
+    }
+
+    &__video_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include vw(padding, 16px);
+        color: #784564;
+
+        strong {
+            @include vw(font-size, 21px);
+        }
 
         button {
-            @include vw(width, 44px);
-            @include vw(height, 44px);
+            @include vw(width, 40px);
+            @include vw(height, 40px);
             border: 0;
             background: transparent;
-            color: #995b80;
-            @include vw(font-size, 34px);
+            color: #784564;
+            @include vw(font-size, 30px);
             cursor: pointer;
         }
     }
 
-    &__memo_dialog_body {
-        overflow-y: auto;
-        @include vw(padding, 30px);
-        color: #563c4d;
-        word-break: keep-all;
-        overflow-wrap: break-word;
+    &__video_player {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #160e22;
 
-        h2 {
-            margin: 0;
-            @include vw(margin-bottom, 30px);
-            @include vw(font-size, 29px);
+        iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    }
+}
+
+
+// Always-visible manual advance control, including queued choice replies.
+.chat_page {
+    &__footer {
+        display: block;
+        flex-shrink: 0;
+        min-height: 0;
+        @include vw(padding-top, 20px);
+        @include vw(padding-right, 24px);
+        @include vw(padding-bottom, 24px);
+        @include vw(padding-left, 24px);
+        background: #ffffff;
+        box-sizing: border-box;
+    }
+
+    &__advance_button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(gap, 12px);
+        width: 100%;
+        @include vw(min-height, 74px);
+        @include vw(border-radius, 16px);
+        border: 1px solid #b16a95;
+        background: #aa5b8b;
+        color: #ffffff;
+        @include vw(font-size, 23px);
+        font-weight: 800;
+        font-family: inherit;
+        cursor: pointer;
+
+        span {
+            color: inherit;
         }
 
-        p {
-            margin: 0;
-            @include vw(margin-bottom, 22px);
-            @include vw(font-size, 22px);
-            line-height: 1.55;
+        &:disabled {
+            opacity: 0.65;
+            cursor: wait;
         }
+
+        &:focus-visible {
+            outline: 2px solid #753956;
+            outline-offset: 3px;
+        }
+    }
+}
+
+// Preserve the original compact relationship-meter layout; refine only its palette.
+.chat_page {
+    &__affection_progress_track {
+        background: linear-gradient(90deg, #f9e7f0 0%, #f2d9e9 52%, #ebd2e6 100%);
+        box-shadow: inset 0 1px 2px rgba(126, 73, 110, 0.08);
+    }
+
+    &__affection_progress_fill {
+        background: linear-gradient(90deg, #ffd1e5 0%, #f6a9ce 38%, #e58bb9 72%, #ca76aa 100%);
+        box-shadow: 0 0 7px rgba(230, 143, 190, 0.2);
+        transition: width 650ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chat_page__affection_progress_fill {
+        transition: none;
+    }
+}
+
+// Restore the in-conversation advance prompt without changing the affection palette.
+.chat_page .chat_page__inline_advance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include vw(gap, 8px);
+    width: 100%;
+    @include vw(margin-top, 16px);
+    @include vw(margin-bottom, 22px);
+    @include vw(padding, 12px);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #b0839c;
+    @include vw(font-size, 17px);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+
+    span {
+        color: inherit;
+        @include vw(font-size, 20px);
+        animation: molala_inline_bob 1.6s ease-in-out infinite;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #ac6791;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: wait;
+    }
+}
+
+.chat_page__footer:empty {
+    display: none;
+}
+
+@keyframes molala_inline_bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(4px);
     }
 }

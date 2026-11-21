@@ -184,6 +184,7 @@ function App() {
                             on_enter_ending={handle_enter_ending}
                             on_open_settings={() => set_settings_open(true)}
                             message_speed_preference={preferences.message_speed}
+                            chat_mode_preference={preferences.chat_mode}
                         />
                         {settings_open && (
                             <StartSettings

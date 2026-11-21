@@ -36,7 +36,7 @@
         object-fit: contain;
         object-position: center;
         pointer-events: none;
-        animation: beach_character_reveal 1000ms cubic-bezier(0.19, 1, 0.22, 1) both;
+        animation: beach_character_enter 850ms ease-out both;
     }
 
     &__home {
@@ -67,23 +67,6 @@
         background: rgba(255, 245, 251, 0.94);
         box-shadow: 0 12px 40px rgba(48, 25, 48, 0.24);
         backdrop-filter: blur(12px);
-    }
-
-    &__dialogue--intro {
-        background: rgba(34, 24, 48, 0.78);
-        border-color: rgba(255, 255, 255, 0.35);
-
-        .beach_scene__speaker {
-            color: #ffe0f0;
-        }
-
-        .beach_scene__line {
-            color: #fff9fc;
-        }
-
-        .beach_scene__hint {
-            color: #f5cfe6;
-        }
     }
 
     &__dialogue_button {
@@ -146,6 +129,31 @@
                 transform: translateY(-2px);
             }
         }
+    }
+
+    &__name_label {
+        @include vw(font-size, 22px);
+        font-weight: 700;
+        color: #713f60;
+    }
+
+    &__name_input {
+        width: 100%;
+        box-sizing: border-box;
+        @include vw(min-height, 68px);
+        @include vw(padding, 16px);
+        @include vw(border-radius, 14px);
+        border: 1px solid #d9a2c2;
+        background: #ffffff;
+        color: #713f60;
+        @include vw(font-size, 24px);
+        font-family: inherit;
+    }
+
+    &__name_error {
+        margin: 0;
+        color: #a83d5f;
+        @include vw(font-size, 18px);
     }
 
     &__finish {
@@ -211,22 +219,11 @@
     }
 }
 
-@keyframes beach_character_reveal {
-    0% {
-        opacity: 0;
-        transform: translateY(35px) scale(0.94);
-        filter: blur(7px);
-    }
-
-    65% {
-        opacity: 1;
-        transform: translateY(-8px) scale(1.015);
-        filter: blur(0);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
+.beach_scene {
+    &__name_help {
+        margin: 0;
+        @include vw(font-size, 18px);
+        color: #754760;
+        text-align: center;
     }
 }

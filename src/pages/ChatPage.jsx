@@ -1,7 +1,20 @@
+import PhoneStatusBar from '../components/PhoneStatusBar.jsx';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { story_data, last_day } from '../data/story_data.js';
+
+const YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/vGSh5jVzS2o';
+
+const max_affection = Object.values(story_data).reduce((total, events) => {
+    return total + events.reduce((day_total, event) => {
+        if (event.type !== 'choice' || !Array.isArray(event.options)) {
+            return day_total;
+        }
+
+        return day_total + Math.max(0, ...event.options.map((option) => Number(option.affection) || 0));
+    }, 0);
+}, 0);
 import { load_game, save_game } from '../utils/save_game.js';
 import { load_preferences, speed_options } from '../utils/preferences.js';
 
@@ -53,13 +66,8 @@ const chat_image_dimensions = {
     'title_bg.png': [941, 1672],
 };
 
-function get_profile_image(day) {
-    const story_day = Number(day) || 1;
-    const image_name = story_day >= 4
-        ? 'day03_selfie.png'
-        : 'profile_sunfish.png';
-
-    return image_map[image_name];
+function get_profile_image(has_selfie) {
+    return image_map[has_selfie ? 'day03_selfie.png' : 'profile_sunfish.png'];
 }
 
 function get_initial_state() {
@@ -111,6 +119,7 @@ function get_initial_state() {
             affection: Number.isFinite(saved_data.affection)
                 ? saved_data.affection
                 : 0,
+            key_choices: saved_data.key_choices || {},
             message_speed: load_preferences().message_speed,
             reply_queue: saved_reply_queue,
             choice_pending: (
@@ -125,13 +134,14 @@ function get_initial_state() {
         step: 0,
         messages: [],
         affection: 0,
+        key_choices: {},
         message_speed: load_preferences().message_speed,
         reply_queue: [],
         choice_pending: false
     };
 }
 
-function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_speed_preference }) {
+function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_speed_preference, chat_mode_preference = 'manual' }) {
     const initial_state_ref = useRef(null);
 
     if (initial_state_ref.current === null) {
@@ -147,7 +157,8 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
     const [show_return_confirm, set_show_return_confirm] = useState(false);
     const [day_transition, set_day_transition] = useState(null);
     const [show_tiara_dialog, set_show_tiara_dialog] = useState(false);
-    const [show_memo_dialog, set_show_memo_dialog] = useState(false);
+    const [show_music_video, set_show_music_video] = useState(false);
+    const [loaded_selfie_ids, set_loaded_selfie_ids] = useState(() => new Set());
 
     const scroll_ref = useRef(null);
     const last_scrolled_message_ref = useRef(null);
@@ -181,6 +192,16 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
         reply_queue,
         choice_pending
     } = game_state;
+
+    const selfie_message_index = messages.findIndex((message) => (
+        message.sender === 'image' && message.image === 'day03_selfie.png'
+    ));
+    const selfie_message = selfie_message_index >= 0
+        ? messages[selfie_message_index]
+        : null;
+    const selfie_is_visible = Boolean(
+        selfie_message && loaded_selfie_ids.has(selfie_message.id)
+    );
 
     const current_story = story_data[day] ?? [];
     const current_step = current_story[step];
@@ -269,10 +290,12 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
 
         pending_action_ref.current = action;
 
-        timer_ref.current = setTimeout(() => {
-            run_pending();
-        }, delay);
-    }, [clear_pending, run_pending]);
+        if (chat_mode_preference === 'auto') {
+            timer_ref.current = setTimeout(() => {
+                run_pending();
+            }, delay);
+        }
+    }, [clear_pending, run_pending, chat_mode_preference]);
 
     const update_game = useCallback((updater) => {
         const next_state = updater(state_ref.current);
@@ -483,7 +506,13 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
 
         update_game((previous) => ({
             ...previous,
-            affection: previous.affection + option.affection,
+            affection: Math.max(0, previous.affection + (Number(option.affection) || 0)),
+            key_choices: option.key_choice
+                ? {
+                    ...(previous.key_choices || {}),
+                    [previous.day]: option.key_choice
+                }
+                : (previous.key_choices || {}),
             messages: [
                 ...previous.messages,
                 {
@@ -549,7 +578,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                     {
                         id: message_id_ref.current++,
                         sender: 'system',
-                        text: `DAY ${next_day}`,
+                        text: `1월 ${next_day + 3}일 DAY ${next_day}`,
                         day: next_day
                     }
                 ]
@@ -566,6 +595,18 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
     };
 
     const handle_chat_image_load = (event, message_id) => {
+        if (event.currentTarget.getAttribute('src') === image_map['day03_selfie.png']) {
+            set_loaded_selfie_ids((previous) => {
+                if (previous.has(message_id)) {
+                    return previous;
+                }
+
+                const next = new Set(previous);
+                next.add(message_id);
+                return next;
+            });
+        }
+
         const container = scroll_ref.current;
 
         if (!container || image_scroll_ref.current !== message_id) {
@@ -577,7 +618,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
         image_scroll_ref.current = null;
     };
 
-    const render_message = (message, history_day) => {
+    const render_message = (message, history_day, message_index) => {
         if (message.sender === 'system') {
             return (
                 <div
@@ -602,15 +643,17 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
 
         if (message.sender === 'music') {
             return (
-                <div
+                <button
+                    type="button"
                     className="chat_page__music_event"
                     key={message.id}
-                    aria-label="음성 파일 영역, 추후 재생 기능 추가 예정"
+                    aria-label={`${message.title || '백일몽'} 영상 재생 팝업 열기`}
+                    onClick={() => set_show_music_video(true)}
                 >
                     <span className="chat_page__music_icon" aria-hidden="true">♫</span>
                     <div className="chat_page__music_details">
                         <strong>{message.title || '백일몽'}</strong>
-                        <span>음성 파일 · 준비 중</span>
+                        <span>터치하여 영상 보기</span>
                         <div className="chat_page__music_wave" aria-hidden="true">
                             <span />
                             <span />
@@ -622,7 +665,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                         </div>
                     </div>
                     <span className="chat_page__music_play" aria-hidden="true">▶</span>
-                </div>
+                </button>
             );
         }
 
@@ -661,7 +704,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                 {message.sender === 'molala' && (
                     <div className="chat_page__message_avatar">
                         <img
-                            src={get_profile_image(message.day ?? history_day)}
+                            src={get_profile_image(selfie_is_visible && message_index > selfie_message_index)}
                             alt="모라라 공주님♡ 프로필"
                             style={{
                                 display: 'block',
@@ -684,10 +727,12 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
     return (
         <section className="chat_page" style={{ position: 'relative' }}>
             <header className="chat_page__header">
+                <PhoneStatusBar date_label={`1월 ${day + 3}일 · DAY ${day}`} />
+                <div className="chat_page__header_main">
                 <div className="chat_page__avatar_reaction_wrap">
                     <div className="chat_page__avatar">
                     <img
-                        src={get_profile_image(day)}
+                        src={get_profile_image(selfie_is_visible)}
                         alt="모라라 공주님♡ 프로필"
                         style={{
                             display: 'block',
@@ -718,9 +763,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
 
                 <div className="chat_page__profile">
                     <strong>모라라 공주님♡</strong>
-                    <span>
-                        1월 {day + 3}일 · DAY {day}
-                    </span>
+
                 </div>
 
                 <button
@@ -742,18 +785,6 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                 </div>
                 <button
                     type="button"
-                    className="chat_page__memo_button"
-                    onClick={() => set_show_memo_dialog(true)}
-                    aria-label="주운 휴대폰의 메모장 다시 보기"
-                    title="메모장"
-                >
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <rect x="5" y="3" width="14" height="18" rx="2" />
-                        <path d="M9 8h6M9 12h6M9 16h4" />
-                    </svg>
-                </button>
-                <button
-                    type="button"
                     className="chat_page__settings_button"
                     onClick={on_open_settings}
                     aria-label="게임 설정"
@@ -765,6 +796,27 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                     </svg>
                 </button>
 
+
+                </div>
+            <div className="chat_page__affection_progress">
+                <div className="chat_page__affection_progress_label">
+                    <span>모라라와의 관계</span>
+                    <strong>{affection} / {max_affection}점</strong>
+                </div>
+                <div
+                    className="chat_page__affection_progress_track"
+                    role="progressbar"
+                    aria-label="호감도"
+                    aria-valuemin={0}
+                    aria-valuemax={max_affection}
+                    aria-valuenow={Math.min(max_affection, Math.max(0, affection))}
+                >
+                    <div
+                        className="chat_page__affection_progress_fill"
+                        style={{ width: `${max_affection > 0 ? Math.min(100, Math.max(0, affection / max_affection * 100)) : 0}%` }}
+                    />
+                </div>
+            </div>
 
             </header>
 
@@ -786,14 +838,30 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                         ? Number(latest_marker.text.replace('DAY ', ''))
                         : 1;
 
-                    return render_message(message, history_day);
+                    return render_message(message, history_day, index);
                 })}
 
-                {is_typing && (
+                {(!is_choice || choice_pending) && !is_day_complete && chat_mode_preference === 'manual' && (
+                    <button
+                        type="button"
+                        className="chat_page__inline_advance"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            handle_skip();
+                        }}
+                        disabled={choice_reaction_pending}
+                        aria-label="다음 대사 보기"
+                    >
+                        <span aria-hidden="true">▾</span>
+                        {choice_reaction_pending ? '답장을 기다리는 중…' : '화면을 눌러 계속하기'}
+                    </button>
+                )}
+
+                {is_typing && chat_mode_preference === 'auto' && (
                     <div className="chat_page__message chat_page__message_molala">
                         <div className="chat_page__message_avatar">
                             <img
-                                src={get_profile_image(day)}
+                                src={get_profile_image(selfie_is_visible)}
                                 alt="모라라 공주님♡ 프로필"
                                 style={{
                                     display: 'block',
@@ -815,7 +883,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
 
                 {is_day_complete && !is_game_complete && (
                     <div className="chat_page__end" role="status">
-                        <span className="chat_page__end_label">DAY {String(day).padStart(2, '0')} · COMPLETE</span>
+                        <span className="chat_page__end_label">1월 {day + 3}일 DAY {day} · COMPLETE</span>
                         <strong className="chat_page__end_title">오늘의 이야기가 끝났어요</strong>
                         <span className="chat_page__end_description">다음 이야기를 만나볼까요?</span>
                     </div>
@@ -844,7 +912,7 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                         type="button"
                         onClick={handle_next_day}
                     >
-                        DAY {day + 1} 시작하기 <span aria-hidden="true">→</span>
+                        1월 {day + 4}일 DAY {day + 1} 시작하기 <span aria-hidden="true">→</span>
                     </button>
                 )}
 
@@ -858,15 +926,9 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                     </button>
                 )}
 
-                {!is_choice && !is_day_complete && (
-                    <div className="chat_page__waiting">
-                        화면을 터치하면 빠르게 진행됩니다.
-                    </div>
-                )}
-
-                {choice_pending && (
-                    <div className="chat_page__waiting">
-                        모라라가 답장하고 있습니다...
+                {(!is_choice || choice_pending) && !is_day_complete && chat_mode_preference === 'auto' && (
+                    <div className="chat_page__waiting" role="status">
+                        자동으로 대화가 진행됩니다.
                     </div>
                 )}
             </footer>
@@ -895,48 +957,46 @@ function ChatPage({ on_return_title, on_enter_ending, on_open_settings, message_
                     <span style={{ fontSize: '13px', letterSpacing: '0.28em' }}>
                         THE NEXT DAY
                     </span>
-                    <strong style={{ fontSize: '48px', letterSpacing: '0.08em' }}>
-                        DAY {String(day_transition.day).padStart(2, '0')}
+                    <strong style={{ fontSize: 'clamp(22px, 5.8vw, 30px)', letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                        1월 {day_transition.day + 3}일 DAY {day_transition.day}
                     </strong>
-                    <span style={{ fontSize: '16px' }}>
-                        1월 {day_transition.day + 3}일
-                    </span>
                     <span aria-hidden="true" style={{ fontSize: '25px' }}>
                         ✦
                     </span>
                 </div>
             )}
 
-            {show_memo_dialog && (
+            {show_music_video && (
                 <div
-                    className="chat_page__memo_overlay"
+                    className="chat_page__video_overlay"
                     role="presentation"
-                    onClick={() => set_show_memo_dialog(false)}
+                    onClick={() => set_show_music_video(false)}
                 >
                     <div
-                        className="chat_page__memo_dialog"
+                        className="chat_page__video_dialog"
                         role="dialog"
                         aria-modal="true"
-                        aria-labelledby="chat_memo_title"
+                        aria-label="백일몽 영상 재생"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <div className="chat_page__memo_dialog_header">
-                            <span>메모</span>
+                        <div className="chat_page__video_header">
+                            <strong>백일몽</strong>
                             <button
                                 type="button"
-                                aria-label="메모장 닫기"
-                                onClick={() => set_show_memo_dialog(false)}
+                                aria-label="영상 닫기"
+                                onClick={() => set_show_music_video(false)}
                             >
                                 ×
                             </button>
                         </div>
-                        <div className="chat_page__memo_dialog_body">
-                            <h2 id="chat_memo_title">공주절 준비 메모</h2>
-                            <p>• 공주님 연락 확인하기</p>
-                            <p>• 약속 장소: 바닷가</p>
-                            <p>• 준비한 선물 챙기기</p>
-                            <p>• 무엇보다 공주님을 혼자 기다리게 하지 말 것</p>
-                            <p>…마지막 줄은 급하게 적은 듯 글씨가 삐뚤다.</p>
+                        <div className="chat_page__video_player">
+                            <iframe
+                                src={`${YOUTUBE_EMBED_URL}?playsinline=1&rel=0`}
+                                title="백일몽 YouTube 영상"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                            />
                         </div>
                     </div>
                 </div>

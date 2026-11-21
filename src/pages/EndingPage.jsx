@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { load_game } from '../utils/save_game.js';
 import { unlock_ending } from '../utils/unlocks.js';
+import { get_ending_type } from '../utils/ending_logic.js';
 
 const image_modules = import.meta.glob(
     '../assets/images/**/*.{png,jpg,jpeg,webp}',
@@ -43,19 +44,6 @@ const ending_data = {
     }
 };
 
-function get_ending_type(game_data) {
-    const affection = Number(game_data?.affection) || 0;
-
-    if (affection >= 23) {
-        return 'true';
-    }
-
-    if (affection >= 18) {
-        return 'normal';
-    }
-
-    return 'bad';
-}
 
 function EndingPage({ on_restart, on_return_title }) {
     const content_ref = useRef(null);

@@ -258,9 +258,9 @@ export const story_data = {
                 },
                 {
                     "text": "출구도 힌트도 없는 미로.",
-                    "affection": 1,
+                    "affection": -2,
                     "trust": 0,
-                    "reply": "야ㅋㅋㅋㅋ\n코랄단을 영원히 가둬 놓을 셈이야?!"
+                    "reply": "아니, 코랄단을 가둬 놓으면 어떡해?!\n같이 놀 공간을 만들자니까!"
                 }
             ]
         },
@@ -296,7 +296,7 @@ export const story_data = {
                 },
                 {
                     "text": "다음엔 200블록 동상으로 갑시다.",
-                    "affection": 1,
+                    "affection": -1,
                     "trust": 0,
                     "reply": "그만 커져ㅋㅋㅋㅋ\n아 진짜 못 말려!"
                 }
@@ -427,9 +427,9 @@ export const story_data = {
                 },
                 {
                     "text": "사진 속 찻잔은 어디서 구했어요?",
-                    "affection": 1,
+                    "affection": -1,
                     "trust": 0,
-                    "reply": "아니 찻잔부터 보냐고ㅋㅋ\n예쁘긴 하지!"
+                    "reply": "아니 사진에서 찻잔만 보이는 거야?!\n나도 같이 찍혔거든…"
                 }
             ]
         },
@@ -465,7 +465,7 @@ export const story_data = {
                 },
                 {
                     "text": "갈매기부터 찍어 보낼게요.",
-                    "affection": 1,
+                    "affection": -1,
                     "trust": 0,
                     "reply": "아니ㅋㅋㅋ 바다보다 갈매기가 더 크게 나왔잖아!\n그래도 귀엽네."
                 }
@@ -538,9 +538,9 @@ export const story_data = {
             "options": [
                 {
                     "text": "공주님의 명령은 절대복종!",
-                    "affection": 1,
+                    "affection": -1,
                     "trust": 0,
-                    "reply": "ㅋㅋㅋㅋ 아니 그건 아니고!\n너 그때 무슨 일이 있어도 내 이야기를 들어주겠다고 했잖아."
+                    "reply": "아니ㅋㅋㅋ 그런 맹세 아니거든!\n내 얘기를 들어주겠다고 했잖아."
                 },
                 {
                     "text": "공주님을 언제나 지켜드리겠습니다!",
@@ -729,18 +729,21 @@ export const story_data = {
             "options": [
                 {
                     "text": "오래전의 추억이 그리워지는 노래 같아요.",
+                    "key_choice": "past",
                     "affection": 1,
                     "trust": 1,
                     "reply": "응. 가끔 옛날 채팅을 보면 그때가 떠올라.\n그때 웃었던 것도 다 소중하거든."
                 },
                 {
                     "text": "함께했던 시간을 소중하게 간직하고 싶은 마음이 느껴져요.",
+                    "key_choice": "understanding",
                     "affection": 3,
                     "trust": 2,
                     "reply": "…응. 내가 전하고 싶었던 마음이야.\n그렇게 들어줘서 고마워."
                 },
                 {
                     "text": "앞으로도 좋은 추억을 많이 만들 수 있을 것 같아요.",
+                    "key_choice": "future",
                     "affection": 3,
                     "trust": 2,
                     "reply": "맞아!\n앞으로 어떤 사람들을 만나게 될지도 기대돼."
@@ -816,9 +819,9 @@ export const story_data = {
                 },
                 {
                     "text": "공주님이라면 당연히 완벽해야죠!",
-                    "affection": 1,
+                    "affection": -2,
                     "trust": 0,
-                    "reply": "아아아 그 부담 주지 마ㅋㅋㅋ\n그래도 잘하고 싶은 건 맞아!"
+                    "reply": "그렇게 말하면 더 부담되잖아…\n나도 실수할 수 있는걸."
                 }
             ]
         },
@@ -857,21 +860,24 @@ export const story_data = {
             "options": [
                 {
                     "text": "꼭 기다릴게요. 준비한 하루를 직접 보고 싶어요.",
+                    "key_choice": "promise",
                     "affection": 3,
                     "trust": 2,
                     "reply": "…ㅎㅎ 알았어.\n나도 내일 열심히 해볼게!"
                 },
                 {
                     "text": "내일 상황을 보고 갈 수 있으면 갈게요.",
-                    "affection": 0,
+                    "key_choice": "uncertain",
+                    "affection": -2,
                     "trust": 0,
-                    "reply": "응. 무리하진 말고.\n그래도 오면 좋겠다."
+                    "reply": "…응. 무리하진 마.\n그래도 조금은 기대했는데."
                 },
                 {
                     "text": "다른 코랄단도 많이 기다리고 있을 거예요.",
-                    "affection": 1,
+                    "key_choice": "distance",
+                    "affection": -1,
                     "trust": 0,
-                    "reply": "그치. 다들 만나고 싶어.\n…그리고 너도."
+                    "reply": "응, 다들 기다리고 있겠지.\n…나는 너도 와 줬으면 좋겠어."
                 }
             ]
         },
