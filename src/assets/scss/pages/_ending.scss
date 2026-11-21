@@ -1,0 +1,192 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/ui_shared' as ui;
+
+.ending_page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    @include ui.game_scrollbar;
+    color: #fff8f3;
+    background: #392e58;
+
+    &__background {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at 50% 32%, #625080 0%, #42345f 52%, #302747 100%);
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(28, 20, 46, 0.1), transparent 42%, rgba(28, 20, 46, 0.18));
+    }
+
+    &__content {
+        position: relative;
+        z-index: 1;
+        @include ui.column_center;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        @include vw(padding-top, 38px);
+        @include vw(padding-right, 30px);
+        @include vw(padding-bottom, 90px);
+        @include vw(padding-left, 30px);
+    }
+
+    &__eyebrow {
+        display: block;
+        font-weight: 700;
+        letter-spacing: 0.32em;
+        color: #f9d5b7;
+        @include vw(font-size, 20px);
+        @include vw(margin-bottom, 20px);
+    }
+
+    &__center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+    }
+
+    &__artwork {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        @include vw(max-width, 590px);
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+        box-sizing: border-box;
+        border: 1px solid rgba(255, 233, 245, 0.35);
+        box-shadow: 0 12px 32px rgba(20, 12, 35, 0.22);
+        background: rgba(255, 255, 255, 0.08);
+        @include vw(border-radius, 14px);
+        @include vw(margin-bottom, 20px);
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__artwork_placeholder {
+        @include vw(font-size, 72px);
+    }
+
+    &__label {
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: #f7c5df;
+        @include vw(font-size, 26px);
+        @include vw(margin-bottom, 10px);
+    }
+
+    &__title {
+        margin: 0;
+        font-weight: 800;
+        line-height: 1.35;
+        text-align: center;
+        @include vw(font-size, 42px);
+        word-break: keep-all;
+    }
+
+    &__divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        color: #f9d5b7;
+        @include vw(gap, 14px);
+        @include vw(margin-top, 18px);
+        @include vw(margin-bottom, 18px);
+
+        &::before,
+        &::after {
+            content: '';
+            display: block;
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 239, 226, 0.3);
+        }
+    }
+
+    &__description {
+        margin: 0;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+        text-align: center;
+        word-break: keep-all;
+        @include vw(font-size, 30px);
+    }
+
+    &__epilogue {
+        margin: 0;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+        text-align: center;
+        color: #eed4e8;
+        word-break: keep-all;
+        @include vw(font-size, 26px);
+        @include vw(margin-top, 14px);
+    }
+
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        @include vw(margin-top, 28px);
+        @include vw(gap, 14px);
+    }
+
+    &__thanks {
+        margin: 0;
+        text-align: center;
+        color: #f3d6e9;
+        @include vw(font-size, 26px);
+    }
+
+    &__restart {
+        width: 100%;
+        max-width: 360px;
+        border: 1px solid rgba(255, 239, 248, 0.6);
+        color: #4e345c;
+        background: #fff1f7;
+        font-weight: 700;
+        cursor: pointer;
+        @include vw(padding-top, 15px);
+        @include vw(padding-right, 18px);
+        @include vw(padding-bottom, 15px);
+        @include vw(padding-left, 18px);
+        @include vw(border-radius, 16px);
+        @include vw(font-size, 26px);
+
+        &:focus-visible {
+            outline: 3px solid #f9d5b7;
+            outline-offset: 3px;
+        }
+    }
+
+    &__credit {
+        letter-spacing: 0.08em;
+        color: #cdbbd9;
+        @include vw(font-size, 18px);
+    }
+}

@@ -1,0 +1,6 @@
+
+@use './functions' as fn;
+
+@mixin vw($property, $value) {
+    #{$property}: fn.vw($value);
+}

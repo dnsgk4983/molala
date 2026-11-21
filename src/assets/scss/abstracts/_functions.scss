@@ -1,0 +1,15 @@
+
+@use 'sass:math';
+@use './variables' as *;
+
+@function vw($value) {
+    @if math.unit($value) == 'px' {
+        $value: math.div($value, 1px);
+    }
+
+    @return min(
+        #{math.div($value, $design_width) * 100}vw,
+        #{math.div($value, $design_width) * 56.25}vh,
+        #{$value}px
+    );
+}

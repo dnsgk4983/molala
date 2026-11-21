@@ -1,0 +1,206 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/ui_shared' as ui;
+
+.start_settings {
+    @include ui.modal_backdrop;
+    z-index: 100;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    @include vw(padding, 28);
+    overflow-y: auto;
+
+    &__panel {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        @include ui.modal_panel;
+        @include vw(max-width, 650);
+        @include vw(gap, 16);
+        @include vw(padding, 34);
+        text-align: center;
+
+        h1 {
+            margin: 0;
+            @include vw(font-size, 31);
+            line-height: 1.35;
+            color: #79516d;
+        }
+    }
+
+    &__eyebrow {
+        @include vw(font-size, 14);
+        @include vw(letter-spacing, 2);
+        color: #b88ca7;
+        font-weight: 700;
+    }
+
+    &__description {
+        margin: 0;
+        @include vw(font-size, 19);
+        line-height: 1.5;
+        color: #98758a;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        margin: 0;
+        @include vw(gap, 10);
+        padding: 0;
+        border: 0;
+        text-align: left;
+
+        legend {
+            @include vw(margin-bottom, 10);
+            @include vw(font-size, 20);
+            font-weight: 700;
+            color: #76556d;
+        }
+    }
+
+    &__options {
+        display: flex;
+        @include vw(gap, 8);
+    }
+
+    &__option {
+        @include ui.button_reset;
+        flex: 1 1 0;
+        min-width: 0;
+        @include vw(min-height, 56);
+        @include vw(padding, 6);
+        @include vw(border-radius, 13);
+        @include vw(font-size, 18);
+        font-weight: 600;
+        line-height: 1.2;
+        color: #8c6b80;
+        background: #ffffff;
+        border: 1px solid #ecd5e3;
+        box-shadow: none;
+        transition: background 0.2s ease, border-color 0.2s ease;
+        @include ui.focus_ring;
+    }
+
+    &__option_active {
+        color: #824866;
+        background: #f9deec;
+        border-color: #cb83ac;
+        font-weight: 800;
+    }
+
+    &__preview {
+        margin: 0;
+        @include vw(padding, 13);
+        @include vw(border-radius, 12);
+        background: #fbeaf3;
+        color: #77546a;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        @include vw(gap, 10);
+        @include vw(margin-top, 8);
+    }
+
+    &__confirm,
+    &__back {
+        @include ui.button_reset;
+        @include ui.center_flex;
+        width: 100%;
+        @include vw(min-height, 62);
+        @include vw(border-radius, 14);
+        @include vw(font-size, 20);
+        font-weight: 700;
+        line-height: 1.2;
+        box-shadow: none;
+        @include ui.focus_ring(#a66c9c);
+    }
+
+    &__confirm {
+        color: #ffffff;
+        background: #b978aa;
+        border: 1px solid #b978aa;
+
+        &:hover {
+            background: #a76599;
+        }
+    }
+
+    &__back {
+        color: #8e6d84;
+        background: #ffffff;
+        border: 1px solid #e9cfe0;
+
+        &:hover {
+            background: #f9edf5;
+        }
+    }
+}
+
+.start_settings {
+    &__return_title {
+        @include ui.button_reset;
+        @include ui.center_flex;
+        width: 100%;
+        @include vw(min-height, 62px);
+        @include vw(border-radius, 14px);
+        @include vw(font-size, 20px);
+        font-weight: 700;
+        color: #8e5c80;
+        background: #fff0f7;
+        border: 1px solid #dcb4cd;
+        @include ui.focus_ring(#a66c9c);
+
+        &:hover {
+            background: #f9e3ef;
+        }
+    }
+
+    &__return_overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include vw(padding, 28px);
+        background: rgba(35, 23, 48, 0.52);
+    }
+
+    &__return_panel {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        width: 100%;
+        @include vw(max-width, 590px);
+        @include vw(gap, 20px);
+        @include vw(padding, 32px);
+        @include vw(border-radius, 22px);
+        background: #fff8fc;
+        text-align: center;
+
+        h2 {
+            margin: 0;
+            @include vw(font-size, 27px);
+            color: #79516d;
+        }
+
+        p {
+            margin: 0;
+            @include vw(font-size, 19px);
+            line-height: 1.6;
+            color: #98758a;
+        }
+    }
+
+    &__return_actions {
+        display: flex;
+        flex-direction: column;
+        @include vw(gap, 10px);
+    }
+}
